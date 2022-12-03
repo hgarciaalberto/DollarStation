@@ -7,7 +7,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
-import com.ahgitdevelopment.dollarstation.features.DashboardScreen
+import com.ahgitdevelopment.dollarstation.features.dashboard.DashboardScreen
 import com.ahgitdevelopment.dollarstation.ui.theme.DollarStationTheme
 import dagger.hilt.android.AndroidEntryPoint
 
