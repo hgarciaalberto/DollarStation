@@ -1,17 +1,18 @@
 package com.ahgitdevelopment.dollarstation.features
 
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.ahgitdevelopment.dollarstation.features.dashboard.DashboardViewModel
 import com.ahgitdevelopment.dollarstation.ui.theme.DollarStationTheme
 
 @Composable
 fun DashboardScreen(
     modifier: Modifier = Modifier,
-    viewModel: DashboardViewModel = viewModel() // TODO: Change when adding Hilt
+    viewModel: DashboardViewModel = hiltViewModel()
 ) {
     DashboardContent("World")
 }
@@ -20,7 +21,7 @@ fun DashboardScreen(
 fun DashboardContent(name: String, modifier: Modifier = Modifier) {
     Text(
         text = "Hello $name!",
-        modifier = modifier
+        modifier = modifier.fillMaxWidth(),
     )
 }
 
