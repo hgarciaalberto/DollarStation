@@ -2,7 +2,9 @@ package com.ahgitdevelopment.dollarstation.features.dashboard
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Text
@@ -11,10 +13,12 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.ExperimentalLifecycleComposeApi
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.navigation.NavController
 import com.ahgitdevelopment.dollarstation.model.local.Currency
 import com.ahgitdevelopment.dollarstation.ui.theme.DollarStationTheme
 import com.google.accompanist.swiperefresh.SwipeRefresh
@@ -24,6 +28,7 @@ import java.util.Calendar
 @OptIn(ExperimentalLifecycleComposeApi::class)
 @Composable
 fun DashboardScreen(
+    navController: NavController,
     modifier: Modifier = Modifier,
     viewModel: DashboardViewModel = hiltViewModel()
 ) {
@@ -59,11 +64,20 @@ fun DashboardContent(
     ) {
         when {
             error.isNotBlank() -> {
-                Text(text = error)
+                Text(modifier = Modifier.fillMaxWidth(), text = error)
             }
 
             currencyList.isEmpty() -> {
-                Text(text = "Empty List")
+                Column(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .wrapContentSize(Alignment.Center)
+                ) {
+                    Text(
+                        textAlign = TextAlign.Center,
+                        text = "Empty List"
+                    )
+                }
             }
 
             else -> {
@@ -81,7 +95,7 @@ fun DashboardContent(
 @Composable
 fun DashboardPreview() {
 
-    val FAKE_CURRENCIES = listOf(
+    val fakeCurrencies = listOf(
         Currency(
             name = "blue",
             buy = 1.1f,
@@ -106,6 +120,18 @@ fun DashboardPreview() {
     )
 
     DollarStationTheme {
-        DashboardContent(FAKE_CURRENCIES, "") {}
+        DashboardContent(fakeCurrencies, "") {}
+    }
+}
+
+
+@Preview(showBackground = true, showSystemUi = true)
+@Composable
+fun DashboardEmptyListPreview() {
+
+    val emptyList = listOf<Currency>()
+
+    DollarStationTheme {
+        DashboardContent(emptyList, "") {}
     }
 }

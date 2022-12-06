@@ -58,6 +58,10 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-runtime-compose:2.6.0-alpha03"
     implementation "androidx.constraintlayout:constraintlayout-compose:1.0.1"
     implementation "androidx.compose.material:material-icons-extended:1.4.0-alpha02"
+    implementation "androidx.navigation:navigation-compose:2.6.0-alpha04"
+
+    // Google
+//    implementation 'com.google.android.material:material:1.8.0-alpha03'
 
     // Compose
     implementation platform('androidx.compose:compose-bom:2022.10.00')
@@ -65,7 +69,6 @@ dependencies {
     implementation 'androidx.compose.ui:ui-graphics'
     implementation 'androidx.compose.ui:ui-tooling-preview'
     implementation 'androidx.compose.material3:material3'
-//    implementation 'com.google.android.material:material:1.8.0-alpha03'
 
     // Hilt
     implementation "androidx.hilt:hilt-navigation-compose:1.0.0"
