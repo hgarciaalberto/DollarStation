@@ -29,7 +29,6 @@ import com.ahgitdevelopment.dollarstation.model.local.Currency
 import com.ahgitdevelopment.dollarstation.ui.theme.DollarStationTheme
 import java.util.Calendar
 
-
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CardItem(
@@ -139,7 +138,7 @@ fun CardItem(
     }
 }
 
-private fun Float.twoDecimals(): String = String.format("%.2f", this)
+fun Float.twoDecimals(): String = String.format("%.2f", this)
 
 @Preview
 @Composable
@@ -159,5 +158,5 @@ fun PreviewCardItem() {
 }
 
 @Composable
-private fun Float.getRedGreenColor(): Color = if (this > 0) colorResource(R.color.green)
+fun Float.getRedGreenColor(): Color = if (this > 0) colorResource(R.color.green)
 else colorResource(R.color.red)

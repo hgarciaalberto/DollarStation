@@ -46,7 +46,7 @@ fun AppNavigation() {
     ) { innerPadding ->
         NavHost(
             navController = navController,
-            startDestination = AppScreens.DashboardScreen.route,
+            startDestination = AppScreens.FirestoreScreen.route,
             modifier = Modifier.padding(innerPadding)
         ) {
             composable(route = AppScreens.DashboardScreen.route) {

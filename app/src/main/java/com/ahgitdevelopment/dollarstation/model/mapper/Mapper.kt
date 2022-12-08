@@ -16,7 +16,7 @@ object Mapper {
     )
 }
 
-private fun String?.getCurrencyName(): String = when (this) {
+fun String?.getCurrencyName(): String = when (this) {
     "dolar_turista" -> "Dólar Turista"
     "dolar_informal" -> "Dólar Blue"
     "dolar_contado_liquidacion" -> "Dólar contado con Liquidación"
