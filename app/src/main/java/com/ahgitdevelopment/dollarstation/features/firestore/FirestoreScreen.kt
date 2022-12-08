@@ -83,7 +83,11 @@ fun FirestoreContent(
             else -> {
                 LazyColumn {
                     items(items = dollarList) {
-                        DbCardItem(it, modifier, onClick)
+                        DbCardItem(
+                            modifier = modifier,
+                            item = it,
+                            onClick = onClick
+                        )
                     }
                 }
             }
