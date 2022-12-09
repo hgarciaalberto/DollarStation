@@ -25,6 +25,7 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.ahgitdevelopment.dollarstation.features.api2.Api2Screen
 import com.ahgitdevelopment.dollarstation.features.dashboard.DashboardScreen
 import com.ahgitdevelopment.dollarstation.features.firestore.FirestoreScreen
 import com.ahgitdevelopment.dollarstation.navigation.BottomNavItem.Companion.items
@@ -46,7 +47,7 @@ fun AppNavigation() {
     ) { innerPadding ->
         NavHost(
             navController = navController,
-            startDestination = AppScreens.FirestoreScreen.route,
+            startDestination = AppScreens.DashboardScreen.route,
             modifier = Modifier.padding(innerPadding)
         ) {
             composable(route = AppScreens.DashboardScreen.route) {
@@ -54,6 +55,9 @@ fun AppNavigation() {
             }
             composable(route = AppScreens.FirestoreScreen.route) {
                 FirestoreScreen(navController)
+            }
+            composable(route = AppScreens.Api2.route) {
+                Api2Screen(navController)
             }
 //        composable(
 //            route = AppScreens.ScreenB.route + "/{text}",

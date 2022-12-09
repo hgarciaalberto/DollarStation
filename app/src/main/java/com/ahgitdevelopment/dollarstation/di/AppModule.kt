@@ -1,6 +1,7 @@
 package com.ahgitdevelopment.dollarstation.di
 
 import com.ahgitdevelopment.dollarstation.network.DollarApi
+import com.ahgitdevelopment.dollarstation.network.DollarApi2
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -15,15 +16,24 @@ import retrofit2.converter.scalars.ScalarsConverterFactory
 object AppModule {
 
     private const val BASE_URL = "https://8w1kj1.deta.dev/"
+    private const val BASE_URL2 = "http://dolar-api.ddns.net:8081/"
 
     @Provides
-    fun providesRetrofit(): Retrofit = Retrofit.Builder()
-        .baseUrl(BASE_URL)
-        .addConverterFactory(GsonConverterFactory.create())
-        .addConverterFactory(ScalarsConverterFactory.create())
-        .build()
+    fun providesDollarApi(): DollarApi =
+        Retrofit.Builder()
+            .baseUrl(BASE_URL)
+            .addConverterFactory(GsonConverterFactory.create())
+            .addConverterFactory(ScalarsConverterFactory.create())
+            .build()
+            .create(DollarApi::class.java)
 
     @Provides
-    fun providesDollarApi(retrofit: Retrofit): DollarApi =
-        retrofit.create(DollarApi::class.java)
+    fun providesDollarApi2(): DollarApi2 =
+        Retrofit.Builder()
+            .baseUrl(BASE_URL2)
+            .addConverterFactory(GsonConverterFactory.create())
+            .addConverterFactory(ScalarsConverterFactory.create())
+            .build()
+            .create(DollarApi2::class.java)
+
 }
