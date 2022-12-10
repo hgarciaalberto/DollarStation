@@ -16,15 +16,18 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
-import com.ahgitdevelopment.dollarstation.R
+import com.ahgitdevelopment.dollarstation.extensions.getRedGreenColor
+import com.ahgitdevelopment.dollarstation.extensions.parseDateFormat
+import com.ahgitdevelopment.dollarstation.extensions.twoDecimals
 import com.ahgitdevelopment.dollarstation.model.local.Currency
 import com.ahgitdevelopment.dollarstation.ui.theme.DollarStationTheme
 import java.util.Calendar
@@ -89,12 +92,15 @@ fun CardItem(
                 fontWeight = FontWeight.Bold
             )
 
-            Column(modifier = Modifier.constrainAs(buy) {
-                top.linkTo(name.bottom, margin = 16.dp)
-                bottom.linkTo(parent.bottom)
-                start.linkTo(parent.start)
-                end.linkTo(sell.start)
-            }) {
+            Column(
+                modifier = Modifier.constrainAs(buy) {
+                    top.linkTo(name.bottom, margin = 16.dp)
+                    bottom.linkTo(parent.bottom)
+                    start.linkTo(parent.start)
+                    end.linkTo(sell.start)
+                },
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
                 Text(text = "Compra", color = Color.Gray)
                 Text(
                     text = item.buy.twoDecimals(),
@@ -102,12 +108,15 @@ fun CardItem(
                 )
             }
 
-            Column(modifier = Modifier.constrainAs(sell) {
-                top.linkTo(buy.top)
-                bottom.linkTo(buy.bottom)
-                start.linkTo(buy.end)
-                end.linkTo(date.start)
-            }) {
+            Column(
+                modifier = Modifier.constrainAs(sell) {
+                    top.linkTo(buy.top)
+                    bottom.linkTo(buy.bottom)
+                    start.linkTo(buy.end)
+                    end.linkTo(date.start)
+                },
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
 
                 Text(text = "Venta", color = Color.Gray)
                 Text(
@@ -116,12 +125,15 @@ fun CardItem(
                 )
             }
 
-            Column(modifier = Modifier.constrainAs(date) {
-                top.linkTo(sell.top)
-                bottom.linkTo(sell.bottom)
-                start.linkTo(sell.end)
-                end.linkTo(parent.end)
-            }) {
+            Column(
+                modifier = Modifier.constrainAs(date) {
+                    top.linkTo(sell.top)
+                    bottom.linkTo(sell.bottom)
+                    start.linkTo(sell.end)
+                    end.linkTo(parent.end)
+                },
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
 
                 Text(
                     text = "Fecha",
@@ -129,22 +141,21 @@ fun CardItem(
                     fontSize = 14.sp
                 )
                 Text(
-                    text = "11/12/2022",
-                    color = Color.Gray,
-                    fontSize = 14.sp
+                    text = item.date.toString().parseDateFormat(),
+                    color = Color.Black,
+                    fontSize = 14.sp,
+                    textAlign = TextAlign.Center
                 )
             }
         }
     }
 }
 
-fun Float.twoDecimals(): String = String.format("%.2f", this)
-
 @Preview
 @Composable
 fun PreviewCardItem() {
 
-    val FAKE_CURRENCY = Currency(
+    val fakeCurrency = Currency(
         name = "Dólar Blue",
         buy = 1.1f,
         sell = 1.1f,
@@ -153,10 +164,6 @@ fun PreviewCardItem() {
     )
 
     DollarStationTheme {
-        CardItem(FAKE_CURRENCY) {}
+        CardItem(fakeCurrency) {}
     }
 }
-
-@Composable
-fun Float.getRedGreenColor(): Color = if (this > 0) colorResource(R.color.green)
-else colorResource(R.color.red)

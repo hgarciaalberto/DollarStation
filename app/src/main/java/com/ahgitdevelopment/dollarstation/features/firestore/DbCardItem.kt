@@ -28,18 +28,22 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.ahgitdevelopment.dollarstation.features.dashboard.getRedGreenColor
-import com.ahgitdevelopment.dollarstation.features.dashboard.twoDecimals
+import com.ahgitdevelopment.dollarstation.extensions.getRedGreenColor
+import com.ahgitdevelopment.dollarstation.extensions.parseDateFormat
+import com.ahgitdevelopment.dollarstation.extensions.twoDecimals
 import com.ahgitdevelopment.dollarstation.model.local.DbCurrency
 import com.ahgitdevelopment.dollarstation.ui.theme.DollarStationTheme
-import java.text.SimpleDateFormat
-import java.util.Locale
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun DbCardItem(item: DbCurrency, modifier: Modifier = Modifier, onClick: () -> Unit) {
+fun DbCardItem(
+    modifier: Modifier = Modifier,
+    item: DbCurrency,
+    onClick: () -> Unit
+) {
 
-    Card(onClick = onClick,
+    Card(
+        onClick = onClick,
         modifier = modifier
             .padding(16.dp)
             .fillMaxWidth(),
@@ -49,7 +53,6 @@ fun DbCardItem(item: DbCurrency, modifier: Modifier = Modifier, onClick: () -> U
         elevation = CardDefaults.cardElevation(),
         border = BorderStroke(2.dp, Color.Blue),
         interactionSource = remember { MutableInteractionSource() }) {
-
 
         Column(
             modifier = modifier
@@ -105,14 +108,19 @@ fun DbCardItem(item: DbCurrency, modifier: Modifier = Modifier, onClick: () -> U
             ) {
 
                 TitleContent(
-                    "Compra", "$" + item.compra.replace(",", ".").toFloat().twoDecimals()
+                    "Compra",
+                    "$" + item.compra.replace(",", ".").toFloat().twoDecimals()
                 )
 
                 TitleContent(
-                    "Venta", "$" + item.venta.replace(",", ".").toFloat().twoDecimals()
+                    "Venta",
+                    "$" + item.venta.replace(",", ".").toFloat().twoDecimals()
                 )
 
-                TitleContent("Fecha", item.fecha.parse())
+                TitleContent(
+                    "Fecha",
+                    item.fecha.parseDateFormat()
+                )
             }
         }
     }
@@ -139,19 +147,8 @@ fun PreviewCardItem() {
     )
 
     DollarStationTheme {
-        DbCardItem(fakeDbCurrency) {}
+        DbCardItem(
+            item = fakeDbCurrency
+        ) {}
     }
-}
-
-
-private fun String.parse(): String {
-//    18/11/2022 - 15:49
-//    18-11-2022 00:00
-    val parser = if (this.count { it == '-' } > 1)
-        SimpleDateFormat("dd-MM-yyyy HH:mm", Locale.getDefault())
-    else
-        SimpleDateFormat("dd/MM/yyyy - HH:mm", Locale.getDefault())
-
-    val formatter = SimpleDateFormat("dd/MM/yyyy\nHH:mm", Locale.getDefault())
-    return formatter.format(parser.parse(this)!!)
 }
