@@ -34,3 +34,35 @@ fun String.parseDateFormat(): String {
     return formatter.format(parser.parse(this)!!)
 }
 
+fun String?.getCurrencyName(): String = when (this) {
+    "dolar_turista" -> "Dólar Turista"
+    "dolar_informal" -> "Dólar Blue"
+    "dolar_contado_liquidacion" -> "Dólar contado con Liquidación"
+    "dolar_qatar" -> "Dólar Qatar"
+    "dolar_lujo" -> "Dólar Lujo"
+    "dolar_coldplay" -> "Dólar Coldplay"
+    "dolar_mep" -> "Dólar MEP"
+    "dolar_oficial" -> "Dólar Oficial"
+    "dolar_futuro" -> "Dólar Futuro"
+    "dolar_mayorista" -> "Dólar Mayorista"
+    "dolar_ahorro" -> "Dólar Ahorro"
+    "dolar_nacion" -> "Dólar Banco Nación"
+    else -> this ?: "nuevo dólar"
+}
+
+fun String?.getKeyFromCurrencyName(): String = when (this) {
+    "Dólar Turista" -> "turista"
+    "Dólar Blue" -> "informal"
+    "Dólar contado con ación" -> "dolar_contado_liquidacion"
+    "Dólar Qatar" -> "qatar"
+    "Dólar Lujo" -> "lujo"
+    "Dólar Coldplay" -> "coldplay"
+    "Dólar MEP" -> "mep"
+    "Dólar Oficial" -> "oficial"
+    "Dólar Futuro" -> "futuro"
+    "Dólar Mayorista" -> "mayorista"
+    "Dólar Ahorro" -> "ahorro"
+    "Dólar Banco Nación" -> "nacion"
+    else -> "oficial"
+}
+
