@@ -16,13 +16,17 @@ sealed class BottomNavItem(
         BottomNavItem("Firestore", R.drawable.database, AppScreens.FirestoreScreen.route)
 
     object Api2 :
-        BottomNavItem("Api2", R.drawable.api, AppScreens.Api2.route)
+        BottomNavItem("Api2", R.drawable.api, AppScreens.Api2Screen.route)
+
+    object Calculator :
+        BottomNavItem("Calculator", R.drawable.calculator, AppScreens.CalculatorScreen.route)
 
     companion object {
         val items = listOf(
             Dashboard,
             Firestore,
-            Api2
+            Api2,
+            Calculator
         )
     }
 }
