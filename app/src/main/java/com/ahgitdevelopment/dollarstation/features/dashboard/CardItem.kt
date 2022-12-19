@@ -35,10 +35,10 @@ import java.util.Calendar
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CardItem(
-    item: Currency, modifier: Modifier = Modifier, onClick: () -> Unit
+    item: Currency, modifier: Modifier = Modifier, onClick: (String) -> Unit
 ) {
 
-    Card(onClick = onClick,
+    Card(onClick = { onClick(item.name) },
         modifier = modifier
             .padding(16.dp)
             .fillMaxWidth(),

@@ -20,9 +20,9 @@ import androidx.lifecycle.compose.ExperimentalLifecycleComposeApi
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import com.ahgitdevelopment.dollarstation.model.local.Currency
+import com.ahgitdevelopment.dollarstation.navigation.AppScreens
 import com.ahgitdevelopment.dollarstation.ui.theme.DollarStationTheme
 import com.google.accompanist.swiperefresh.SwipeRefresh
-import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import java.util.Calendar
 
 @OptIn(ExperimentalLifecycleComposeApi::class)
@@ -36,7 +36,7 @@ fun DashboardScreen(
     val dollarList by viewModel.dollarList.collectAsStateWithLifecycle()
     val errorMessage by viewModel.errorMessage.collectAsStateWithLifecycle()
     val isLoading by viewModel.isLoading.collectAsState()
-    val swipeRefreshState = rememberSwipeRefreshState(isRefreshing = isLoading)
+    val swipeRefreshState = rememberPullRefreshState(isLoading, onRefresh =)
 
     SwipeRefresh(
         state = swipeRefreshState,
@@ -45,7 +45,9 @@ fun DashboardScreen(
         DashboardContent(
             currencyList = dollarList,
             error = errorMessage,
-            onClick = viewModel::cardClick
+            onClick = { currency ->
+                navController.navigate(AppScreens.HistoryScreen.createRoute(currency))
+            }
         )
     }
 }
@@ -55,7 +57,7 @@ fun DashboardContent(
     currencyList: List<Currency>,
     error: String = "",
     modifier: Modifier = Modifier,
-    onClick: () -> Unit
+    onClick: (String) -> Unit
 ) {
     Column(
         modifier = modifier.fillMaxWidth(),

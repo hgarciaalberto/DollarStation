@@ -29,6 +29,8 @@ import com.ahgitdevelopment.dollarstation.features.api2.Api2Screen
 import com.ahgitdevelopment.dollarstation.features.calculator.CalculatorScreen
 import com.ahgitdevelopment.dollarstation.features.dashboard.DashboardScreen
 import com.ahgitdevelopment.dollarstation.features.firestore.FirestoreScreen
+import com.ahgitdevelopment.dollarstation.features.history.HistoryScreen
+import com.ahgitdevelopment.dollarstation.navigation.AppScreens.HistoryScreen.CURRENCY_KEY
 import com.ahgitdevelopment.dollarstation.navigation.BottomNavItem.Companion.items
 import com.ahgitdevelopment.dollarstation.ui.theme.DollarStationTheme
 
@@ -48,12 +50,19 @@ fun AppNavigation() {
     ) { innerPadding ->
         NavHost(
             navController = navController,
-            startDestination = AppScreens.CalculatorScreen.route,
+            startDestination = AppScreens.DashboardScreen.route,
             modifier = Modifier.padding(innerPadding)
         ) {
             composable(route = AppScreens.DashboardScreen.route) {
                 DashboardScreen(navController)
             }
+
+            composable(route = AppScreens.HistoryScreen.route) { backStackEntry ->
+                val currency = backStackEntry.arguments?.getString(CURRENCY_KEY)
+                requireNotNull(currency) { "$CURRENCY_KEY parameter wasn't found. Please make sure it's set!" }
+                HistoryScreen(navController, currency)
+            }
+
             composable(route = AppScreens.FirestoreScreen.route) {
                 FirestoreScreen(navController)
             }
@@ -63,14 +72,9 @@ fun AppNavigation() {
             composable(route = AppScreens.CalculatorScreen.route) {
                 CalculatorScreen(navController)
             }
-//        composable(
-//            route = AppScreens.ScreenB.route + "/{text}",
-//            arguments = listOf(navArgument(name = "text") {
-//                type = NavType.StringType
-//            })
-//        ) {
-//            AppScreens.ScreenB(navController, it.arguments?.getString("text"))
-//        }
+            composable(route = AppScreens.CalculatorScreen.route) {
+                CalculatorScreen(navController)
+            }
         }
     }
 }

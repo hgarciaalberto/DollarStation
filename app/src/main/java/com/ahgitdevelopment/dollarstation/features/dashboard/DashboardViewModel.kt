@@ -38,7 +38,4 @@ class DashboardViewModel @Inject constructor(
             }
         )
     }
-
-    fun cardClick() {
-    }
 }
