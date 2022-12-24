@@ -9,7 +9,6 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -20,10 +19,11 @@ import androidx.lifecycle.compose.ExperimentalLifecycleComposeApi
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import com.ahgitdevelopment.dollarstation.model.local.Currency
+import com.ahgitdevelopment.dollarstation.model.local.CurrencyType
 import com.ahgitdevelopment.dollarstation.navigation.AppScreens
 import com.ahgitdevelopment.dollarstation.ui.theme.DollarStationTheme
 import com.google.accompanist.swiperefresh.SwipeRefresh
-import java.util.Calendar
+import java.time.LocalDateTime
 
 @OptIn(ExperimentalLifecycleComposeApi::class)
 @Composable
@@ -35,7 +35,7 @@ fun DashboardScreen(
 
     val dollarList by viewModel.dollarList.collectAsStateWithLifecycle()
     val errorMessage by viewModel.errorMessage.collectAsStateWithLifecycle()
-    val isLoading by viewModel.isLoading.collectAsState()
+    val isLoading by viewModel.isLoading.collectAsStateWithLifecycle()
     val swipeRefreshState = rememberPullRefreshState(isLoading, onRefresh =)
 
     SwipeRefresh(
@@ -46,7 +46,7 @@ fun DashboardScreen(
             currencyList = dollarList,
             error = errorMessage,
             onClick = { currency ->
-                navController.navigate(AppScreens.HistoryScreen.createRoute(currency))
+                navController.navigate(AppScreens.HistoryScreen.createRoute(currency.key))
             }
         )
     }
@@ -57,7 +57,7 @@ fun DashboardContent(
     currencyList: List<Currency>,
     error: String = "",
     modifier: Modifier = Modifier,
-    onClick: (String) -> Unit
+    onClick: (CurrencyType) -> Unit
 ) {
     Column(
         modifier = modifier.fillMaxWidth(),
@@ -99,24 +99,24 @@ fun DashboardPreview() {
 
     val fakeCurrencies = listOf(
         Currency(
-            name = "blue",
+            currencyType = CurrencyType.TURISTA,
             buy = 1.1f,
             sell = 1.1f,
-            date = Calendar.getInstance().time,
+            date = LocalDateTime.now(),
             variation = 1.2222f,
         ),
         Currency(
-            name = "nacion",
+            currencyType = CurrencyType.NACION,
             buy = 1.1f,
             sell = 1.1f,
-            date = Calendar.getInstance().time,
+            date = LocalDateTime.now().plusHours(1),
             variation = -1.2f,
         ),
         Currency(
-            name = "soja",
+            currencyType = CurrencyType.COLDPLAY,
             buy = 1.1f,
             sell = 1.1f,
-            date = Calendar.getInstance().time,
+            date = LocalDateTime.now().plusHours(2),
             variation = 1.2f,
         )
     )

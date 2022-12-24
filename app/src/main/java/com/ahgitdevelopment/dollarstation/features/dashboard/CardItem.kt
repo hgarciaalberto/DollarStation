@@ -26,19 +26,19 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 import com.ahgitdevelopment.dollarstation.extensions.getRedGreenColor
-import com.ahgitdevelopment.dollarstation.extensions.parseDateFormat
 import com.ahgitdevelopment.dollarstation.extensions.twoDecimals
 import com.ahgitdevelopment.dollarstation.model.local.Currency
+import com.ahgitdevelopment.dollarstation.model.local.CurrencyType
 import com.ahgitdevelopment.dollarstation.ui.theme.DollarStationTheme
-import java.util.Calendar
+import java.time.LocalDateTime
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CardItem(
-    item: Currency, modifier: Modifier = Modifier, onClick: (String) -> Unit
+    item: Currency, modifier: Modifier = Modifier, onClick: (CurrencyType) -> Unit
 ) {
 
-    Card(onClick = { onClick(item.name) },
+    Card(onClick = { onClick(item.currencyType) },
         modifier = modifier
             .padding(16.dp)
             .fillMaxWidth(),
@@ -63,7 +63,7 @@ fun CardItem(
                     bottom.linkTo(buy.top)
                     start.linkTo(parent.start)
                     end.linkTo(arrow.start)
-                }, text = item.name, color = Color.Blue, fontSize = 20.sp
+                }, text = item.currencyType.fullName, color = Color.Blue, fontSize = 20.sp
             )
 
             Icon(modifier = Modifier
@@ -140,10 +140,11 @@ fun CardItem(
                     color = Color.Gray,
                     fontSize = 14.sp
                 )
+
                 Text(
-                    text = item.date.toString().parseDateFormat(),
+                    text = "${item.date.toLocalDate()}\n${item.date.toLocalTime()}",
                     color = Color.Black,
-                    fontSize = 14.sp,
+                    fontSize = 18.sp,
                     textAlign = TextAlign.Center
                 )
             }
@@ -156,10 +157,10 @@ fun CardItem(
 fun PreviewCardItem() {
 
     val fakeCurrency = Currency(
-        name = "Dólar Blue",
+        currencyType = CurrencyType.TURISTA,
         buy = 1.1f,
         sell = 1.1f,
-        date = Calendar.getInstance().time,
+        date = LocalDateTime.now(),
         variation = 1.2f,
     )
 

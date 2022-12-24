@@ -32,21 +32,5 @@ class DbCurrency() {
         this.fecha = fecha
         this.variacion = variacion
     }
-//    constructor(
-//        currency: String,
-//        compra: String,
-//        venta: String,
-//        fecha: String,
-//        variacion: String
-//    ) : this(
-//        currency = currency,
-//        compra = compra,
-//        venta = venta,
-//        fecha = fecha,
-//        variacion = variacion
-//    ) {
-//        this.currency = currency,
-//        this.compra = compra
-//    }
 }
 

@@ -1,11 +1,11 @@
 package com.ahgitdevelopment.dollarstation.model.local
 
-import java.util.Date
+import java.time.LocalDateTime
 
 data class Currency(
-    val name: String,
+    val currencyType: CurrencyType,
     val buy: Float,
     val sell: Float,
-    val date: Date?,
+    val date: LocalDateTime,
     val variation: Float
 )

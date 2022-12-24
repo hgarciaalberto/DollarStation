@@ -4,7 +4,7 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ahgitdevelopment.dollarstation.di.ROOT_DATABASE
-import com.ahgitdevelopment.dollarstation.extensions.getCurrencyName
+import com.ahgitdevelopment.dollarstation.model.local.CurrencyType
 import com.ahgitdevelopment.dollarstation.model.local.DbCurrency
 import com.google.firebase.firestore.FirebaseFirestore
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -48,7 +48,7 @@ class FirestoreViewModel @Inject constructor(
             }
             dollarList.value = dbCurrencies.map {
                 it.apply {
-                    currency = currency.getCurrencyName()
+                    currency = CurrencyType.getType(currency).name
                 }
             }
             _isLoading.value = false

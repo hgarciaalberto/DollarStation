@@ -26,7 +26,7 @@ class CalculatorViewModel @Inject constructor(
             _isLoading.value = true
             repository.getDollars().fold(
                 onSuccess = {
-                    currencies.value = it.map { currency -> currency.name }
+                    currencies.value = it.map { currency -> currency.currencyType.fullName }
                     _isLoading.value = false
                 },
                 onFailure = {

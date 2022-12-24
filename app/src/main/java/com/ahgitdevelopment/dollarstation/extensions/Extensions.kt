@@ -21,33 +21,19 @@ fun String.parseDateFormat(): String {
 //    18-11-2022 00:00
 //    23-11-2022 - 17:56
 //    Tue Jul 12 15:42:00 GMT+01:00 2022
+//    2022-12-21T14:47
 
-    val parser = when (this.count { it == '-' }) {
-        1 -> SimpleDateFormat("dd/MM/yyyy - HH:mm", Locale.getDefault())
-        2 -> SimpleDateFormat("dd-MM-yyyy HH:mm", Locale.getDefault())
-        3 -> SimpleDateFormat("dd-MM-yyyy - HH:mm", Locale.getDefault())
+
+    val parser = when {
+        this.contains('T') -> SimpleDateFormat("yyyy-mm-ddTHH:mm", Locale.getDefault())
+        this.count { it == '-' } == 1 -> SimpleDateFormat("dd/MM/yyyy - HH:mm", Locale.getDefault())
+        this.count { it == '-' } == 2 -> SimpleDateFormat("dd-MM-yyyy HH:mm", Locale.getDefault())
+        this.count { it == '-' } == 3 -> SimpleDateFormat("dd-MM-yyyy - HH:mm", Locale.getDefault())
         else -> SimpleDateFormat("E MMM dd HH:mm:ss zzz yyyy", Locale.getDefault())
-//        else -> SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy", Locale.getDefault())
     }
 
     val formatter = SimpleDateFormat("dd/MM/yyyy\nHH:mm", Locale.getDefault())
     return formatter.format(parser.parse(this)!!)
-}
-
-fun String?.getCurrencyName(): String = when (this) {
-    "dolar_turista" -> "Dólar Turista"
-    "dolar_informal" -> "Dólar Blue"
-    "dolar_contado_liquidacion" -> "Dólar contado con Liquidación"
-    "dolar_qatar" -> "Dólar Qatar"
-    "dolar_lujo" -> "Dólar Lujo"
-    "dolar_coldplay" -> "Dólar Coldplay"
-    "dolar_mep" -> "Dólar MEP"
-    "dolar_oficial" -> "Dólar Oficial"
-    "dolar_futuro" -> "Dólar Futuro"
-    "dolar_mayorista" -> "Dólar Mayorista"
-    "dolar_ahorro" -> "Dólar Ahorro"
-    "dolar_nacion" -> "Dólar Banco Nación"
-    else -> this ?: "nuevo dólar"
 }
 
 fun String?.getKeyFromCurrencyName(): String = when (this) {

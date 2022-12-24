@@ -12,7 +12,7 @@ android {
 
     defaultConfig {
         applicationId "com.ahgitdevelopment.dollarstation"
-        minSdk 24
+        minSdk 26
         targetSdk 33
         versionCode 1
         versionName "0.1.0"
@@ -58,7 +58,7 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-livedata-ktx:2.5.1"
     implementation "androidx.lifecycle:lifecycle-runtime-compose:2.6.0-alpha03"
     implementation "androidx.constraintlayout:constraintlayout-compose:1.0.1"
-    implementation "androidx.compose.material:material-icons-extended:1.4.0-alpha02"
+    implementation "androidx.compose.material:material-icons-extended:1.4.0-alpha03"
     implementation "androidx.navigation:navigation-compose:2.6.0-alpha04"
 
     // Google
@@ -88,6 +88,10 @@ dependencies {
     implementation platform('com.google.firebase:firebase-bom:31.0.2')
     implementation 'com.google.firebase:firebase-analytics-ktx'
     implementation 'com.google.firebase:firebase-firestore-ktx'
+
+    // Vico Charts
+    implementation "com.patrykandpatryk.vico:compose:1.6.1"
+    implementation "com.patrykandpatryk.vico:compose-m3:1.6.1"
 
     // Tests
     testImplementation 'junit:junit:4.13.2'
