@@ -16,6 +16,7 @@ import androidx.compose.ui.viewinterop.AndroidView
 import com.ahgitdevelopment.dollarstation.model.local.History
 import com.ahgitdevelopment.dollarstation.ui.theme.DollarStationTheme
 import com.github.mikephil.charting.charts.LineChart
+import com.github.mikephil.charting.components.AxisBase
 import com.github.mikephil.charting.components.Legend
 import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.components.YAxis
@@ -23,17 +24,18 @@ import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
 import com.github.mikephil.charting.formatter.IFillFormatter
+import com.github.mikephil.charting.formatter.ValueFormatter
+import java.time.ZoneOffset
+import java.util.Calendar
 
 @Composable
 fun MPAndroidContent(
-    currencyName: String,
-    historyData: List<History> = listOf(),
-    modifier: Modifier = Modifier
+    currencyName: String, historyData: List<History> = listOf()
 ) {
     // on below line we are creating a cross fade and
     // specifying target state as pie chart data the
     // method we have created in Pie chart data class.
-    Crossfade(targetState = historyData) { pieChartData ->
+    Crossfade(targetState = historyData) { chartData ->
         // on below line we are creating an
         // android view for pie chart.
         AndroidView(factory = { context ->
@@ -65,9 +67,21 @@ fun MPAndroidContent(
 
                 xAxis.apply {
                     isEnabled = true
-                    setLabelCount(10, false)
+                    setLabelCount(8, false)
                     textColor = Color.BLACK
                     position = XAxis.XAxisPosition.BOTTOM
+                    granularity = 1f
+                    valueFormatter = object : ValueFormatter() {
+                        override fun getAxisLabel(value: Float, axis: AxisBase?): String {
+                            val date = historyData[value.toInt()].date.toEpochSecond(ZoneOffset.UTC)
+                            val calendar = Calendar.getInstance().apply {
+                                timeInMillis = date * 1000
+                            }
+                            return "${calendar.get(Calendar.MONTH) + 1}/${
+                                calendar.get(Calendar.YEAR).toString().substring(2)
+                            }"
+                        }
+                    }
                 }
 
                 axisLeft.apply {
@@ -94,11 +108,10 @@ fun MPAndroidContent(
             // for it and specifying padding to it.
             modifier = Modifier
                 .wrapContentSize()
-                .padding(16.dp),
-            update = {
+                .padding(16.dp), update = {
                 // on below line we are calling update pie chart
                 // method and passing pie chart and list of data.
-                updatePieChartWithData(it, pieChartData)
+                updatePieChartWithData(it, chartData)
             })
     }
 }
@@ -106,8 +119,7 @@ fun MPAndroidContent(
 // on below line we are creating a update pie
 // chart function to update data in pie chart.
 fun updatePieChartWithData(
-    chart: LineChart,
-    data: List<History>
+    chart: LineChart, data: List<History>
 ) {
 
     val entries = ArrayList<Entry>()
@@ -119,12 +131,12 @@ fun updatePieChartWithData(
         mode = LineDataSet.Mode.CUBIC_BEZIER
         cubicIntensity = 0.2f
         setDrawFilled(true)
-        setDrawCircles(false)
+        setDrawCircles(true)
         lineWidth = 1.8f
         circleRadius = 4f
-        highLightColor = Color.YELLOW
+        highLightColor = Color.BLACK
         color = Color.BLUE
-        setDrawHorizontalHighlightIndicator(true)
+        setDrawHorizontalHighlightIndicator(false)
         fillFormatter = IFillFormatter { _, _ ->
             chart.axisLeft.axisMinimum
         }
