@@ -28,9 +28,7 @@ import java.time.LocalDateTime
 @OptIn(ExperimentalLifecycleComposeApi::class)
 @Composable
 fun DashboardScreen(
-    navController: NavController,
-    modifier: Modifier = Modifier,
-    viewModel: DashboardViewModel = hiltViewModel()
+    navController: NavController, modifier: Modifier = Modifier, viewModel: DashboardViewModel = hiltViewModel()
 ) {
 
     val dollarList by viewModel.dollarList.collectAsStateWithLifecycle()
@@ -39,25 +37,17 @@ fun DashboardScreen(
     val swipeRefreshState = rememberPullRefreshState(isLoading, onRefresh =)
 
     SwipeRefresh(
-        state = swipeRefreshState,
-        onRefresh = viewModel::refreshData
+        state = swipeRefreshState, onRefresh = viewModel::refreshData
     ) {
-        DashboardContent(
-            currencyList = dollarList,
-            error = errorMessage,
-            onClick = { currency ->
-                navController.navigate(AppScreens.HistoryScreen.createRoute(currency.key))
-            }
-        )
+        DashboardContent(currencyList = dollarList, error = errorMessage, onClick = { currency ->
+            navController.navigate(AppScreens.HistoryScreen.createRoute(currency.key))
+        })
     }
 }
 
 @Composable
 fun DashboardContent(
-    currencyList: List<Currency>,
-    error: String = "",
-    modifier: Modifier = Modifier,
-    onClick: (CurrencyType) -> Unit
+    currencyList: List<Currency>, error: String = "", modifier: Modifier = Modifier, onClick: (CurrencyType) -> Unit
 ) {
     Column(
         modifier = modifier.fillMaxWidth(),
@@ -76,8 +66,7 @@ fun DashboardContent(
                         .wrapContentSize(Alignment.Center)
                 ) {
                     Text(
-                        textAlign = TextAlign.Center,
-                        text = "Empty List"
+                        textAlign = TextAlign.Center, text = "Empty List"
                     )
                 }
             }
@@ -104,15 +93,13 @@ fun DashboardPreview() {
             sell = 1.1f,
             date = LocalDateTime.now(),
             variation = 1.2222f,
-        ),
-        Currency(
+        ), Currency(
             currencyType = CurrencyType.NACION,
             buy = 1.1f,
             sell = 1.1f,
             date = LocalDateTime.now().plusHours(1),
             variation = -1.2f,
-        ),
-        Currency(
+        ), Currency(
             currencyType = CurrencyType.COLDPLAY,
             buy = 1.1f,
             sell = 1.1f,

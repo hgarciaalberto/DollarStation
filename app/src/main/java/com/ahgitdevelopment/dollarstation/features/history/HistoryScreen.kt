@@ -2,17 +2,21 @@ package com.ahgitdevelopment.dollarstation.features.history
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.ExperimentalLifecycleComposeApi
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -39,10 +43,20 @@ fun HistoryScreen(
         modifier = Modifier
             .fillMaxSize()
             .background(Color.White)
-            .padding(8.dp)
+            .padding(8.dp),
     ) {
-        Text(text = CurrencyType.getType(currency).fullName)
-        Spacer(modifier = Modifier.height(32.dp))
+        Text(
+            modifier = Modifier
+                .wrapContentSize()
+                .align(alignment = Alignment.CenterHorizontally)
+                .padding(top = 16.dp),
+            textAlign = TextAlign.Center,
+            text = CurrencyType.getType(currency).fullName,
+            overflow = TextOverflow.Ellipsis,
+            maxLines = 2,
+            fontWeight = FontWeight.Bold,
+            fontSize = 22.sp,
+        )
 
         MPAndroidContent(currency, dollarList)
     }
