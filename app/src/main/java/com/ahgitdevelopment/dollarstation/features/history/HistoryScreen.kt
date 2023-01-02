@@ -24,7 +24,9 @@ import java.time.LocalDateTime
 @OptIn(ExperimentalLifecycleComposeApi::class)
 @Composable
 fun HistoryScreen(
-    navController: NavController, currency: String, viewModel: HistoryViewModel = hiltViewModel()
+    navController: NavController,
+    currency: String,
+    viewModel: HistoryViewModel = hiltViewModel()
 ) {
 
     val dollarList by viewModel.historyData.collectAsStateWithLifecycle()
@@ -42,8 +44,6 @@ fun HistoryScreen(
         Text(text = CurrencyType.getType(currency).fullName)
         Spacer(modifier = Modifier.height(32.dp))
 
-//        StockChartScreen(currency, dollarList)
-//        HistoryContent(currency, dollarList)
         MPAndroidContent(currency, dollarList)
     }
 }

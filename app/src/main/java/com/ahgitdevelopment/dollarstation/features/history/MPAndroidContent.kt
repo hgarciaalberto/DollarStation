@@ -1,30 +1,39 @@
 package com.ahgitdevelopment.dollarstation.features.history
 
+import android.content.Context
 import android.graphics.Color
 import android.graphics.Typeface
 import android.view.ViewGroup
 import android.widget.LinearLayout
+import android.widget.TextView
 import androidx.compose.animation.Crossfade
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
+import com.ahgitdevelopment.dollarstation.R
 import com.ahgitdevelopment.dollarstation.model.local.History
 import com.ahgitdevelopment.dollarstation.ui.theme.DollarStationTheme
 import com.github.mikephil.charting.charts.LineChart
 import com.github.mikephil.charting.components.AxisBase
 import com.github.mikephil.charting.components.Legend
+import com.github.mikephil.charting.components.MarkerView
 import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.components.YAxis
+import com.github.mikephil.charting.data.CandleEntry
 import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
 import com.github.mikephil.charting.formatter.IFillFormatter
 import com.github.mikephil.charting.formatter.ValueFormatter
+import com.github.mikephil.charting.highlight.Highlight
+import com.github.mikephil.charting.utils.MPPointF
+import com.github.mikephil.charting.utils.Utils
 import java.time.ZoneOffset
 import java.util.Calendar
 
@@ -32,15 +41,18 @@ import java.util.Calendar
 fun MPAndroidContent(
     currencyName: String, historyData: List<History> = listOf()
 ) {
+    val context = LocalContext.current
+
     // on below line we are creating a cross fade and
     // specifying target state as pie chart data the
     // method we have created in Pie chart data class.
     Crossfade(targetState = historyData) { chartData ->
         // on below line we are creating an
         // android view for pie chart.
-        AndroidView(factory = { context ->
-            // on below line we are creating a pie chart
-            // and specifying layout params.
+        AndroidView(
+            factory = { context ->
+                // on below line we are creating a pie chart
+                // and specifying layout params.
             LineChart(context).apply {
 
                 layoutParams = LinearLayout.LayoutParams(
@@ -111,16 +123,14 @@ fun MPAndroidContent(
                 .padding(16.dp), update = {
                 // on below line we are calling update pie chart
                 // method and passing pie chart and list of data.
-                updatePieChartWithData(it, chartData)
+                updatePieChartWithData(context, it, chartData)
             })
     }
 }
 
 // on below line we are creating a update pie
 // chart function to update data in pie chart.
-fun updatePieChartWithData(
-    chart: LineChart, data: List<History>
-) {
+fun updatePieChartWithData(context: Context, chart: LineChart, data: List<History>) {
 
     val entries = ArrayList<Entry>()
     data.mapIndexed { index, history ->
@@ -131,7 +141,7 @@ fun updatePieChartWithData(
         mode = LineDataSet.Mode.CUBIC_BEZIER
         cubicIntensity = 0.2f
         setDrawFilled(true)
-        setDrawCircles(true)
+        setDrawCircles(false)
         lineWidth = 1.8f
         circleRadius = 4f
         highLightColor = Color.BLACK
@@ -149,6 +159,30 @@ fun updatePieChartWithData(
     }
 
     chart.data = d
+
+    chart.setTouchEnabled(true)
+
+    val mv = object : MarkerView(context, android.R.layout.simple_list_item_1) {
+        private val text: TextView = findViewById<TextView>(android.R.id.text1).apply {
+            setBackgroundResource(R.drawable.background_chart_value_label)
+            setTextColor(context.getColor(R.color.black))
+        }
+
+        override fun refreshContent(e: Entry, highlight: Highlight?) {
+            if (e is CandleEntry) {
+                text.text = Utils.formatNumber(e.high, 0, true)
+            } else {
+                text.text = Utils.formatNumber(e.y, 0, true)
+            }
+            super.refreshContent(e, highlight)
+        }
+
+        override fun getOffset(): MPPointF {
+            return MPPointF(-(width / 2).toFloat(), -height.toFloat() - 20)
+        }
+    }
+    mv.chartView = chart
+    chart.marker = mv
 
     // on below line we are calling invalidate in chart.
     chart.invalidate()
