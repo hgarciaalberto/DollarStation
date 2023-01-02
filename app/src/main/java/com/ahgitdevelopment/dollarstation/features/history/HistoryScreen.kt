@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -21,6 +22,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.ExperimentalLifecycleComposeApi
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
+import com.ahgitdevelopment.dollarstation.features.commons.CircleProgressInd
 import com.ahgitdevelopment.dollarstation.model.local.CurrencyType
 import com.ahgitdevelopment.dollarstation.model.local.History
 import java.time.LocalDateTime
@@ -34,6 +36,7 @@ fun HistoryScreen(
 ) {
 
     val dollarList by viewModel.historyData.collectAsStateWithLifecycle()
+    val isLoading by viewModel.isLoading.collectAsState()
 
     LaunchedEffect(true) {
         viewModel.init(currency)
@@ -58,7 +61,11 @@ fun HistoryScreen(
             fontSize = 22.sp,
         )
 
-        MPAndroidContent(currency, dollarList)
+        if (isLoading)
+            CircleProgressInd(true)
+        else
+            MPAndroidContent(currency, dollarList)
+
     }
 }
 
