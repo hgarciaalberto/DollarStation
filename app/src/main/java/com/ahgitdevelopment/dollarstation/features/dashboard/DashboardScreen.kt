@@ -1,12 +1,18 @@
 package com.ahgitdevelopment.dollarstation.features.dashboard
 
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.pullrefresh.PullRefreshIndicator
+import androidx.compose.material.pullrefresh.pullRefresh
+import androidx.compose.material.pullrefresh.rememberPullRefreshState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -22,10 +28,9 @@ import com.ahgitdevelopment.dollarstation.model.local.Currency
 import com.ahgitdevelopment.dollarstation.model.local.CurrencyType
 import com.ahgitdevelopment.dollarstation.navigation.AppScreens
 import com.ahgitdevelopment.dollarstation.ui.theme.DollarStationTheme
-import com.google.accompanist.swiperefresh.SwipeRefresh
 import java.time.LocalDateTime
 
-@OptIn(ExperimentalLifecycleComposeApi::class)
+@OptIn(ExperimentalLifecycleComposeApi::class, ExperimentalMaterialApi::class)
 @Composable
 fun DashboardScreen(
     navController: NavController, modifier: Modifier = Modifier, viewModel: DashboardViewModel = hiltViewModel()
@@ -34,14 +39,24 @@ fun DashboardScreen(
     val dollarList by viewModel.dollarList.collectAsStateWithLifecycle()
     val errorMessage by viewModel.errorMessage.collectAsStateWithLifecycle()
     val isLoading by viewModel.isLoading.collectAsStateWithLifecycle()
-    val swipeRefreshState = rememberPullRefreshState(isLoading, onRefresh =)
 
-    SwipeRefresh(
-        state = swipeRefreshState, onRefresh = viewModel::refreshData
-    ) {
-        DashboardContent(currencyList = dollarList, error = errorMessage, onClick = { currency ->
-            navController.navigate(AppScreens.HistoryScreen.createRoute(currency.key))
-        })
+    val pullRefreshState = rememberPullRefreshState(isLoading, viewModel::refreshData)
+
+    Box(modifier = Modifier.pullRefresh(pullRefreshState)) {
+        DashboardContent(
+            currencyList = dollarList,
+            error = errorMessage,
+            onClick = { currency ->
+                navController.navigate(AppScreens.HistoryScreen.createRoute(currency.key))
+            }
+        )
+        PullRefreshIndicator(
+            refreshing = isLoading,
+            state = pullRefreshState,
+            modifier = Modifier.align(Alignment.TopCenter),
+            scale = true,
+            backgroundColor = MaterialTheme.colors.primary
+        )
     }
 }
 
