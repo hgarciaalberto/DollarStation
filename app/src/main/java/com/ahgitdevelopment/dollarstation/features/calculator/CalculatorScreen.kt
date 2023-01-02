@@ -35,13 +35,13 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.ExperimentalLifecycleComposeApi
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
-import com.ahgitdevelopment.dollarstation.extensions.getCurrencyName
 import com.ahgitdevelopment.dollarstation.extensions.getKeyFromCurrencyName
 import com.ahgitdevelopment.dollarstation.features.calculator.CalculatorViewModel.ExchangeType
 import com.ahgitdevelopment.dollarstation.features.calculator.CalculatorViewModel.ExchangeType.BUY
 import com.ahgitdevelopment.dollarstation.features.calculator.CalculatorViewModel.ExchangeType.SELL
 import com.ahgitdevelopment.dollarstation.features.commons.CircleProgressInd
 import com.ahgitdevelopment.dollarstation.features.commons.CustomSwitch
+import com.ahgitdevelopment.dollarstation.model.local.CurrencyType
 import com.ahgitdevelopment.dollarstation.ui.theme.DollarStationTheme
 
 @OptIn(ExperimentalLifecycleComposeApi::class)
@@ -114,12 +114,12 @@ fun CalculatorContent(
                     .menuAnchor(),
                 readOnly = true,
                 label = { Text("Currencies", fontSize = 16.sp) },
-                value = selectedOptionText.getCurrencyName(),
+                value = selectedOptionText,
                 textStyle = TextStyle(
                     fontSize = 20.sp
                 ),
                 onValueChange = { currency ->
-                    selectedOptionText = currency.getCurrencyName()
+                    selectedOptionText = currency
                     valueChange(
                         selectedOptionText.getKeyFromCurrencyName(),
                         currencyValueText,
@@ -249,7 +249,7 @@ fun PreviewCalculator() {
         "dolar_qatar",
         "dolar_informal",
         "dolar_lujo"
-    ).map { it.getCurrencyName() }
+    ).map { CurrencyType.getType(it).fullName }
 
     DollarStationTheme {
         CalculatorContent(

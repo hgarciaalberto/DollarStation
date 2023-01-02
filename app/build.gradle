@@ -12,7 +12,7 @@ android {
 
     defaultConfig {
         applicationId "com.ahgitdevelopment.dollarstation"
-        minSdk 24
+        minSdk 26
         targetSdk 33
         versionCode 1
         versionName "0.1.0"
@@ -58,11 +58,9 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-livedata-ktx:2.5.1"
     implementation "androidx.lifecycle:lifecycle-runtime-compose:2.6.0-alpha03"
     implementation "androidx.constraintlayout:constraintlayout-compose:1.0.1"
-    implementation "androidx.compose.material:material-icons-extended:1.4.0-alpha02"
+    implementation 'androidx.compose.material:material:1.4.0-alpha03'
+    implementation "androidx.compose.material:material-icons-extended:1.4.0-alpha03"
     implementation "androidx.navigation:navigation-compose:2.6.0-alpha04"
-
-    // Google
-//    implementation 'com.google.android.material:material:1.8.0-alpha03'
 
     // Compose
     implementation platform('androidx.compose:compose-bom:2022.10.00')
@@ -81,13 +79,17 @@ dependencies {
     implementation "com.squareup.retrofit2:converter-scalars:2.9.0"
     implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
 
-    // Swipe Refresh
-    implementation "com.google.accompanist:accompanist-swiperefresh:0.28.0"
-
     // Firebase
     implementation platform('com.google.firebase:firebase-bom:31.0.2')
     implementation 'com.google.firebase:firebase-analytics-ktx'
     implementation 'com.google.firebase:firebase-firestore-ktx'
+
+    // Vico Charts
+    implementation "com.patrykandpatryk.vico:compose:1.6.1"
+    implementation "com.patrykandpatryk.vico:compose-m3:1.6.1"
+
+    // MPAndroid
+    implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
 
     // Tests
     testImplementation 'junit:junit:4.13.2'

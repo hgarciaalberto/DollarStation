@@ -1,15 +1,20 @@
 package com.ahgitdevelopment.dollarstation.features.dashboard
 
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.pullrefresh.PullRefreshIndicator
+import androidx.compose.material.pullrefresh.pullRefresh
+import androidx.compose.material.pullrefresh.rememberPullRefreshState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -20,42 +25,44 @@ import androidx.lifecycle.compose.ExperimentalLifecycleComposeApi
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import com.ahgitdevelopment.dollarstation.model.local.Currency
+import com.ahgitdevelopment.dollarstation.model.local.CurrencyType
+import com.ahgitdevelopment.dollarstation.navigation.AppScreens
 import com.ahgitdevelopment.dollarstation.ui.theme.DollarStationTheme
-import com.google.accompanist.swiperefresh.SwipeRefresh
-import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
-import java.util.Calendar
+import java.time.LocalDateTime
 
-@OptIn(ExperimentalLifecycleComposeApi::class)
+@OptIn(ExperimentalLifecycleComposeApi::class, ExperimentalMaterialApi::class)
 @Composable
 fun DashboardScreen(
-    navController: NavController,
-    modifier: Modifier = Modifier,
-    viewModel: DashboardViewModel = hiltViewModel()
+    navController: NavController, modifier: Modifier = Modifier, viewModel: DashboardViewModel = hiltViewModel()
 ) {
 
     val dollarList by viewModel.dollarList.collectAsStateWithLifecycle()
     val errorMessage by viewModel.errorMessage.collectAsStateWithLifecycle()
-    val isLoading by viewModel.isLoading.collectAsState()
-    val swipeRefreshState = rememberSwipeRefreshState(isRefreshing = isLoading)
+    val isLoading by viewModel.isLoading.collectAsStateWithLifecycle()
 
-    SwipeRefresh(
-        state = swipeRefreshState,
-        onRefresh = viewModel::refreshData
-    ) {
+    val pullRefreshState = rememberPullRefreshState(isLoading, viewModel::refreshData)
+
+    Box(modifier = Modifier.pullRefresh(pullRefreshState)) {
         DashboardContent(
             currencyList = dollarList,
             error = errorMessage,
-            onClick = viewModel::cardClick
+            onClick = { currency ->
+                navController.navigate(AppScreens.HistoryScreen.createRoute(currency.key))
+            }
+        )
+        PullRefreshIndicator(
+            refreshing = isLoading,
+            state = pullRefreshState,
+            modifier = Modifier.align(Alignment.TopCenter),
+            scale = true,
+            backgroundColor = MaterialTheme.colors.primary
         )
     }
 }
 
 @Composable
 fun DashboardContent(
-    currencyList: List<Currency>,
-    error: String = "",
-    modifier: Modifier = Modifier,
-    onClick: () -> Unit
+    currencyList: List<Currency>, error: String = "", modifier: Modifier = Modifier, onClick: (CurrencyType) -> Unit
 ) {
     Column(
         modifier = modifier.fillMaxWidth(),
@@ -74,8 +81,7 @@ fun DashboardContent(
                         .wrapContentSize(Alignment.Center)
                 ) {
                     Text(
-                        textAlign = TextAlign.Center,
-                        text = "Empty List"
+                        textAlign = TextAlign.Center, text = "Empty List"
                     )
                 }
             }
@@ -97,24 +103,22 @@ fun DashboardPreview() {
 
     val fakeCurrencies = listOf(
         Currency(
-            name = "blue",
+            currencyType = CurrencyType.TURISTA,
             buy = 1.1f,
             sell = 1.1f,
-            date = Calendar.getInstance().time,
+            date = LocalDateTime.now(),
             variation = 1.2222f,
-        ),
-        Currency(
-            name = "nacion",
+        ), Currency(
+            currencyType = CurrencyType.NACION,
             buy = 1.1f,
             sell = 1.1f,
-            date = Calendar.getInstance().time,
+            date = LocalDateTime.now().plusHours(1),
             variation = -1.2f,
-        ),
-        Currency(
-            name = "soja",
+        ), Currency(
+            currencyType = CurrencyType.COLDPLAY,
             buy = 1.1f,
             sell = 1.1f,
-            date = Calendar.getInstance().time,
+            date = LocalDateTime.now().plusHours(2),
             variation = 1.2f,
         )
     )

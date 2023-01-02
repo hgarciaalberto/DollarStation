@@ -1,12 +1,18 @@
 package com.ahgitdevelopment.dollarstation.features.firestore
 
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.pullrefresh.PullRefreshIndicator
+import androidx.compose.material.pullrefresh.pullRefresh
+import androidx.compose.material.pullrefresh.rememberPullRefreshState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -21,10 +27,8 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import com.ahgitdevelopment.dollarstation.model.local.DbCurrency
 import com.ahgitdevelopment.dollarstation.ui.theme.DollarStationTheme
-import com.google.accompanist.swiperefresh.SwipeRefresh
-import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 
-@OptIn(ExperimentalLifecycleComposeApi::class)
+@OptIn(ExperimentalLifecycleComposeApi::class, ExperimentalMaterialApi::class)
 @Composable
 fun FirestoreScreen(
     navController: NavController,
@@ -34,18 +38,22 @@ fun FirestoreScreen(
 
     val dollarList by viewModel.dollarList.collectAsStateWithLifecycle()
     val errorMessage by viewModel.errorMessage.collectAsStateWithLifecycle()
-
     val isLoading by viewModel.isLoading.collectAsState()
-    val swipeRefreshState = rememberSwipeRefreshState(isRefreshing = isLoading)
 
-    SwipeRefresh(
-        state = swipeRefreshState,
-        onRefresh = viewModel::refreshData
-    ) {
+    val pullRefreshState = rememberPullRefreshState(isLoading, viewModel::refreshData)
+
+    Box(modifier = modifier.pullRefresh(pullRefreshState)) {
         FirestoreContent(
             dollarList = dollarList,
             error = errorMessage,
             onClick = viewModel::cardClick
+        )
+        PullRefreshIndicator(
+            refreshing = isLoading,
+            state = pullRefreshState,
+            modifier = Modifier.align(Alignment.TopCenter),
+            scale = true,
+            backgroundColor = MaterialTheme.colors.primary
         )
     }
 }

@@ -3,6 +3,7 @@ package com.ahgitdevelopment.dollarstation.repository
 import com.ahgitdevelopment.dollarstation.features.calculator.CalculatorViewModel
 import com.ahgitdevelopment.dollarstation.model.local.Currency
 import com.ahgitdevelopment.dollarstation.model.local.DbCurrency
+import com.ahgitdevelopment.dollarstation.model.local.History
 import com.ahgitdevelopment.dollarstation.model.mapper.Mapper.toDomain
 import com.ahgitdevelopment.dollarstation.network.DollarApi
 import com.ahgitdevelopment.dollarstation.network.DollarApi2
@@ -16,7 +17,6 @@ class Repository @Inject constructor(
     ///////////////////////////////////////////////////////////////////////////
     // API 1
     ///////////////////////////////////////////////////////////////////////////
-
     suspend fun getDollars(): Result<List<Currency>> {
         return try {
             Result.success(dollarApi.getDollars().map { it.toDomain() })
@@ -42,10 +42,19 @@ class Repository @Inject constructor(
         }
     }
 
+    suspend fun getHistory(currency: String): Result<List<History>> {
+        return try {
+            currency.split('_')[1].let { currency_name ->
+                Result.success(dollarApi.getHistory(currency_name).map { it.toDomain() })
+            }
+        } catch (ex: Exception) {
+            Result.failure(ex)
+        }
+    }
+
     ///////////////////////////////////////////////////////////////////////////
     // API 2
     ///////////////////////////////////////////////////////////////////////////
-
     suspend fun getDollarsApi2(): Result<List<DbCurrency>> {
         return try {
             Result.success(dollarApi2.getDollars())
