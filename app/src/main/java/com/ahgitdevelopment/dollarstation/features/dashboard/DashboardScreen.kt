@@ -21,7 +21,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.compose.ExperimentalLifecycleComposeApi
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import com.ahgitdevelopment.dollarstation.model.local.Currency
@@ -30,7 +29,7 @@ import com.ahgitdevelopment.dollarstation.navigation.AppScreens
 import com.ahgitdevelopment.dollarstation.ui.theme.DollarStationTheme
 import java.time.LocalDateTime
 
-@OptIn(ExperimentalLifecycleComposeApi::class, ExperimentalMaterialApi::class)
+@OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun DashboardScreen(
     navController: NavController, modifier: Modifier = Modifier, viewModel: DashboardViewModel = hiltViewModel()
@@ -104,8 +103,8 @@ fun DashboardPreview() {
     val fakeCurrencies = listOf(
         Currency(
             currencyType = CurrencyType.TURISTA,
-            buy = 1.1f,
-            sell = 1.1f,
+            buy = 1.2f,
+            sell = 1.2f,
             date = LocalDateTime.now(),
             variation = 1.2222f,
         ), Currency(

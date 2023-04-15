@@ -32,7 +32,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.compose.ExperimentalLifecycleComposeApi
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import com.ahgitdevelopment.dollarstation.extensions.getKeyFromCurrencyName
@@ -44,7 +43,6 @@ import com.ahgitdevelopment.dollarstation.features.commons.CustomSwitch
 import com.ahgitdevelopment.dollarstation.model.local.CurrencyType
 import com.ahgitdevelopment.dollarstation.ui.theme.DollarStationTheme
 
-@OptIn(ExperimentalLifecycleComposeApi::class)
 @Composable
 fun CalculatorScreen(
     navController: NavController,

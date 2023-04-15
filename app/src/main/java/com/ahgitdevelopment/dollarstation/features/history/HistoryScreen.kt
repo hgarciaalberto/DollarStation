@@ -19,7 +19,6 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.compose.ExperimentalLifecycleComposeApi
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import com.ahgitdevelopment.dollarstation.features.commons.CircleProgressInd
@@ -27,7 +26,6 @@ import com.ahgitdevelopment.dollarstation.model.local.CurrencyType
 import com.ahgitdevelopment.dollarstation.model.local.History
 import java.time.LocalDateTime
 
-@OptIn(ExperimentalLifecycleComposeApi::class)
 @Composable
 fun HistoryScreen(
     navController: NavController,
