@@ -86,7 +86,7 @@ dependencies {
 
     // Vico Charts
     implementation "com.patrykandpatryk.vico:compose:1.6.5"
-    implementation "com.patrykandpatryk.vico:compose-m3:1.6.5"
+    implementation "com.patrykandpatryk.vico:compose-m3:1.7.1"
 
     // MPAndroid
     implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
