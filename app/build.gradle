@@ -85,8 +85,8 @@ dependencies {
     implementation 'com.google.firebase:firebase-firestore-ktx'
 
     // Vico Charts
-    implementation "com.patrykandpatryk.vico:compose:1.6.5"
-    implementation "com.patrykandpatryk.vico:compose-m3:1.6.5"
+    implementation "com.patrykandpatryk.vico:compose:1.8.1"
+    implementation "com.patrykandpatryk.vico:compose-m3:1.8.1"
 
     // MPAndroid
     implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
